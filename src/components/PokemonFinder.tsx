@@ -55,9 +55,9 @@ const PokemonFinder: React.FC = () => {
 
     return (
         <>
-            <div className="bg-blue-200 min-h-screen flex items-center justify-center">
-                <div className="bg-white p-8 rounded shadow-md">
-                    <h1 className="text-3xl font-bold mb-4">POKEMON FINDER</h1>
+            <div className="bg-white p-8 rounded shadow-md">
+                <h1 className="text-3xl font-bold mb-4">POKEMON FINDER</h1>
+                <div className="mb-2">                
                     <input 
                     type="text" 
                     placeholder="Enter Pokemon name here..." 
@@ -65,21 +65,23 @@ const PokemonFinder: React.FC = () => {
                     onKeyPress={handleSearchEnter} 
                     value={pokemonName}
                     className="border rounded py-2 px-3 w-64 mb-4"
-                    />
+                />
+                </div>
+                <div className="mb-2">
                     <button 
                     onClick={handleSearchClick} 
                     disabled={isLoading}
                     className="bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-600">
-                        {isLoading ? "Searching..." : "Search the Pokemon!"}
-                    </button>
-
-                    {error && <p className="text-red-500 mt-2">{error}</p>}
+                    {isLoading ? "Searching..." : "Search the Pokemon!"}
+                </button>
                 </div>
-            </div>
+
+                {error && <p className="text-red-500 mt-2">{error}</p>}
+                </div>
             <div>
                 {pokemonData && (
                     <div className="text-center">
-                        <h2 className="text-xl font-semibold mb-2">{pokemonData.name}</h2>
+                        <h2 className="text-xl font-semibold mb-2">{pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1)}</h2>
                         <div className="flex justify-center">
                         <img src={pokemonData.sprites.front_default} alt={pokemonData.name} className="max-w-xs" />
                         </div>

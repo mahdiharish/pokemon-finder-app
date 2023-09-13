@@ -5,10 +5,7 @@ function App() {
 
   return (
     <>
-    <h1>
-      POKEMON FINDER
-    </h1>
-    <PokemonFinder />
+      <PokemonFinder />
     </>
   )
 }
