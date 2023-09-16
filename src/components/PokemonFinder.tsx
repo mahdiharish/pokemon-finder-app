@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import PokemonDetails from "./PokemonDetails";
 
 const PokemonFinder: React.FC = () => {
     const [pokemonName, setPokemonName] = useState("");
@@ -8,7 +9,7 @@ const PokemonFinder: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        if (pokemonData) {
+        if (pokemonData && pokemonData.types && pokemonData.types[0] && pokemonData.types[0].type && pokemonData.types[0].type.url) {
             getPokemonType();
         }
     }, [pokemonData]);
@@ -18,17 +19,11 @@ const PokemonFinder: React.FC = () => {
     }
 
     const handleSearchClick = async () => {
-        await searchPokemon();
-    }
-
-    const handleSearchEnter = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter") {
-            await searchPokemon();
-        }
-    }
-
-    const searchPokemon = async () => {
+        // Reset state before making a new search
+        setPokemonData(null);
+        setError("");
         setIsLoading(true);
+
         try {
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`);
             setPokemonData(response.data);
@@ -62,7 +57,6 @@ const PokemonFinder: React.FC = () => {
                     type="text" 
                     placeholder="Enter Pokemon name here..." 
                     onChange={handleInputChange} 
-                    onKeyPress={handleSearchEnter} 
                     value={pokemonName}
                     className="py-3 px-5 block w-full border-gray-200 rounded-full text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400"
                 />
@@ -82,11 +76,8 @@ const PokemonFinder: React.FC = () => {
                 </div>
             <div>
                 {pokemonData && (
-                    <div className="text-center">
-                        <h2 className="text-xl font-semibold mb-2">{pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1)}</h2>
-                        <div className="flex justify-center">
-                        <img src={pokemonData.sprites.other["official-artwork"].front_default} alt={pokemonData.name} className="max-w-xs" />
-                        </div>
+                    <div>
+                    <PokemonDetails pokemonData={pokemonData} />
                     </div>
                 )}
             </div>
